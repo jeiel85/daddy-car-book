@@ -1,0 +1,7 @@
+Daddy Car Book is a simple, intuitive car maintenance and fueling ledger app tailored for dads. Avoid complicated automatic integrations and keep full control by tracking only what matters to you.
+
+Key Features:
+1. Simple Fuel Logs: Record fuel costs, price per liter, gas stations, and notes effortlessly.
+2. Visual Monthly/Annual Statistics: Check your fuel expenses and efficiency through beautiful charts.
+3. Essential Maintenance Reminders: Stay ahead of engine oil, wiper, and tire replacements with local notifications.
+4. 100% Offline-First (Local-First): All your sensitive data is safely stored in your device's local Room database and never sent to cloud servers.

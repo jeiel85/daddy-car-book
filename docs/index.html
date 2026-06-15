@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="아빠들을 위한 쉽고 직관적인 차량 주유비 및 정비 내역 가계부 앱 - 아빠 차 차계부">
+  <meta name="theme-color" content="#0B132B">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <meta property="og:title" content="아빠 차 차계부 - Daddy Car Book">
+  <meta property="og:description" content="복잡한 설정 없이 한눈에 보는 직관적인 주유비 통계 및 소모품 교체 리마인더">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://jeiel85.github.io/daddy-car-book/">
+  <meta property="og:image" content="https://jeiel85.github.io/daddy-car-book/assets/feature-graphic.png">
+  <title>아빠 차 차계부 - Daddy Car Book</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --slate-dark: #0B132B;
+      --slate-card: rgba(28, 37, 65, 0.7);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --primary-navy: #1C2541;
+      --accent-teal: #48CAE4;
+      --accent-gold: #FFB703;
+      --alert-orange: #FB8500;
+      --saving-green: #2EC4B6;
+      --text-primary: #F8FAFC;
+      --text-secondary: #94A3B8;
+      --shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--slate-dark);
+      color: var(--text-primary);
+      font-family: 'Outfit', 'Noto Sans KR', 'Inter', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(28, 37, 65, 0.35), transparent 45%),
+        radial-gradient(circle at 90% 80%, rgba(72, 202, 228, 0.08), transparent 45%);
+    }
+
+    .shell {
+      width: min(1200px, calc(100% - 48px));
+      margin: 0 auto;
+    }
+
+    /* Navigation */
+    header {
+      border-bottom: 1px solid var(--border-color);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 19, 43, 0.85);
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1.4rem;
+      letter-spacing: -0.5px;
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+
+    .brand img {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+    }
+
+    .brand span {
+      background: linear-gradient(135deg, var(--text-primary), var(--accent-teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-primary);
+    }
+
+    .lang-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background 0.3s;
+      font-family: inherit;
+    }
+
+    .lang-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 80px 0 60px 0;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 24px;
+      letter-spacing: -1px;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--accent-teal), var(--accent-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: clamp(1.1rem, 3vw, 1.4rem);
+      color: var(--text-secondary);
+      max-width: 700px;
+      margin: 0 auto 40px auto;
+      font-weight: 300;
+    }
+
+    /* Phone Mockup */
+    .mockup-container {
+      background: var(--slate-card);
+      border: 1px solid var(--border-color);
+      border-radius: 36px;
+      padding: 40px;
+      max-width: 480px;
+      margin: 0 auto 80px auto;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(20px);
+      position: relative;
+    }
+
+    .phone-screen {
+      background: #0B132B;
+      border-radius: 24px;
+      border: 4px solid #1C2541;
+      padding: 20px;
+      color: var(--text-primary);
+      font-family: 'Noto Sans KR', sans-serif;
+      text-align: left;
+    }
+
+    .phone-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .phone-title {
+      font-weight: 800;
+      font-size: 1.2rem;
+      background: linear-gradient(135deg, #FFF, var(--accent-teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .card-alert {
+      background: rgba(251, 133, 0, 0.15);
+      border: 1px solid rgba(251, 133, 0, 0.3);
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      font-size: 0.85rem;
+    }
+
+    .card-alert-title {
+      color: var(--alert-orange);
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .budget-card {
+      background: #1C2541;
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+
+    .budget-label {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+
+    .budget-value {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--accent-teal);
+      margin-bottom: 12px;
+    }
+
+    .progress-bar-container {
+      background: rgba(255,255,255,0.05);
+      border-radius: 8px;
+      height: 12px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .progress-bar-fill {
+      background: var(--saving-green);
+      width: 78%;
+      height: 100%;
+      border-radius: 8px;
+    }
+
+    .budget-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    .quick-input-btn {
+      background: linear-gradient(135deg, var(--accent-teal), #0077B6);
+      color: #0B132B;
+      font-weight: 800;
+      padding: 14px;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 0.95rem;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(72, 202, 228, 0.3);
+      transition: transform 0.2s;
+    }
+
+    .quick-input-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Features Section */
+    .features {
+      padding: 80px 0;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 800;
+      margin-bottom: 60px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 32px;
+    }
+
+    .feature-card {
+      background: var(--slate-card);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      padding: 40px;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(72, 202, 228, 0.3);
+    }
+
+    .icon-wrapper {
+      width: 60px;
+      height: 60px;
+      border-radius: 16px;
+      background: rgba(72, 202, 228, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .icon-wrapper svg {
+      width: 28px;
+      height: 28px;
+      fill: var(--accent-teal);
+    }
+
+    .feature-card h3 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .feature-card p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-color);
+      padding: 60px 0;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-bottom: 24px;
+    }
+
+    .footer-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: var(--text-primary);
+    }
+
+    /* Language Support */
+    [data-lang="en"] {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="shell nav-container">
+      <a href="#" class="brand">
+        <img src="assets/favicon.png" alt="Logo">
+        <span>아빠 차 차계부</span>
+      </a>
+      <div class="nav-links">
+        <a href="#features" class="ko-txt">주요 기능</a>
+        <a href="#features" class="en-txt" style="display:none;">Features</a>
+        <button class="lang-btn" onclick="toggleLanguage()">English</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero shell">
+    <h1 class="ko-txt">아빠들을 위한<br>가장 직관적인 <span>차량 관리 장부</span></h1>
+    <h1 class="en-txt" style="display:none;">The Most Intuitive<br><span>Car Care Ledger</span> for Dads</h1>
+    
+    <p class="ko-txt">어지러운 자동 연동이나 복잡한 용어 없이, 오직 주유비 지출액과 엔진오일 등 소모품 교체 알림만 큼직하고 안전하게 보여주는 아빠 전용 차계부입니다.</p>
+    <p class="en-txt" style="display:none;">No complicated automatic linking. Just tracks your fuel expenses and maintenance schedule. Keep it simple, neat, and offline-first.</p>
+    
+    <!-- Phone Mockup -->
+    <div class="mockup-container">
+      <div class="phone-screen">
+        <div class="phone-header">
+          <span class="phone-title ko-txt">🚗 내 차 관리</span>
+          <span class="phone-title en-txt" style="display:none;">🚗 My Car Care</span>
+          <span style="font-size: 0.8rem; color: var(--text-secondary);">12:00 PM</span>
+        </div>
+        
+        <!-- Warning Banner -->
+        <div class="card-alert">
+          <div class="card-alert-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+            <span class="ko-txt">정비 경고 알림</span>
+            <span class="en-txt" style="display:none;">Maintenance Alert</span>
+          </div>
+          <span class="ko-txt" style="font-size: 0.8rem; color: var(--text-primary);">엔진오일 교체 주기가 도래했습니다! (500km 남음)</span>
+          <span class="en-txt" style="display:none; font-size: 0.8rem; color: var(--text-primary);">Engine oil replacement due soon! (500km left)</span>
+        </div>
+
+        <!-- Budget Visual Card -->
+        <div class="budget-card">
+          <div class="budget-label ko-txt">이번 달 주유 금액 합계</div>
+          <div class="budget-label en-txt" style="display:none;">Total Fueling This Month</div>
+          <div class="budget-value">185,000 원</div>
+          
+          <div class="progress-bar-container">
+            <div class="progress-bar-fill"></div>
+          </div>
+          
+          <div class="budget-info">
+            <span class="ko-txt">지난달 합계: 240,000 원</span>
+            <span class="en-txt" style="display:none;">Last Month: 240,000 KRW</span>
+            <span class="ko-txt">안전 주유 범위</span>
+            <span class="en-txt" style="display:none;">Safe Budget</span>
+          </div>
+        </div>
+        
+        <!-- Quick Log Action -->
+        <div class="quick-input-btn ko-txt">⚡ 주유 내역 간편 작성</div>
+        <div class="quick-input-btn en-txt" style="display:none;">⚡ Fast Fuel Logging</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features shell" id="features">
+    <h2 class="section-title ko-txt">핵심 강점</h2>
+    <h2 class="section-title en-txt" style="display:none;">Key Highlights</h2>
+    
+    <div class="features-grid">
+      <!-- Feature 1 -->
+      <div class="feature-card">
+        <div class="icon-wrapper">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+        </div>
+        <h3 class="ko-txt">직관적인 주유비 기록</h3>
+        <h3 class="en-txt" style="display:none;">Simple Fuel Tracking</h3>
+        <p class="ko-txt">자산 연동이나 어려운 용어 대신, 아빠들이 가장 필요로 하는 월별 주유량, 연비, 단가를 큼직하게 보여주어 즉각적인 소비 조절을 돕습니다.</p>
+        <p class="en-txt" style="display:none;">Instead of complex banking syncs, see exactly how much you spent on gas, fuel efficiency, and locations in large, clear typography.</p>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="feature-card">
+        <div class="icon-wrapper">
+          <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+        </div>
+        <h3 class="ko-txt">정확한 정비 리마인더</h3>
+        <h3 class="en-txt" style="display:none;">Maintenance Alert</h3>
+        <p class="ko-txt">엔진오일, 미션오일, 타이어 등 주요 소모품의 마지막 교체 날짜와 누적 주행거리를 바탕으로 교체 예정 시점을 경고와 알림으로 꼼꼼히 챙겨 줍니다.</p>
+        <p class="en-txt" style="display:none;">Tracks engine oil, tires, and battery intervals. Displays real-time warnings on home and fires push alerts so you never miss an auto care schedule.</p>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="feature-card">
+        <div class="icon-wrapper">
+          <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+        </div>
+        <h3 class="ko-txt">100% 철저한 로컬 가동</h3>
+        <h3 class="en-txt" style="display:none;">100% Local-First</h3>
+        <p class="ko-txt">사용자가 등록한 모든 지출 정보 및 차량 로그 데이터는 외부 클라우드로 전송되지 않고, 기기 내부 보안 데이터베이스(Room DB)에 안전하게 소장됩니다.</p>
+        <p class="en-txt" style="display:none;">Your sensitive logs and locations never leave your device. All information is safely secured inside Android's local SQLite database.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="shell">
+      <div class="footer-links">
+        <a href="privacy.html" class="ko-txt">개인정보처리방침</a>
+        <a href="privacy.html" class="en-txt" style="display:none;">Privacy Policy</a>
+      </div>
+      <p>&copy; 2026 Daddy Car Book. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    let currentLang = 'ko';
+
+    function toggleLanguage() {
+      const btn = document.querySelector('.lang-btn');
+      const koTexts = document.querySelectorAll('.ko-txt');
+      const enTexts = document.querySelectorAll('.en-txt');
+      
+      if (currentLang === 'ko') {
+        // Switch to English
+        koTexts.forEach(el => el.style.display = 'none');
+        enTexts.forEach(el => el.style.display = 'block');
+        btn.textContent = '한국어';
+        currentLang = 'en';
+        document.documentElement.lang = 'en';
+      } else {
+        // Switch to Korean
+        koTexts.forEach(el => el.style.display = 'block');
+        enTexts.forEach(el => el.style.display = 'none');
+        btn.textContent = 'English';
+        currentLang = 'ko';
+        document.documentElement.lang = 'ko';
+      }
+    }
+  </script>
+</body>
+</html>
