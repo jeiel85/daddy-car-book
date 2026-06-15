@@ -1,0 +1,6 @@
+{
+  "name": "가족 차량 관리",
+  "description": "차 관리할 때 놓치지 않게 해주는 아빠용 차량 노트. 자동차 정비, 보험, 검사, 주유비, 세차 등 완벽 관리.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
